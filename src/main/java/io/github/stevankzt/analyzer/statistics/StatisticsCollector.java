@@ -40,14 +40,13 @@ public final class StatisticsCollector implements Consumer<Address> {
     }
 
     private List<DuplicateRecord> collectDuplicates() {
-        Comparator<String> byName = russianCollator();
         return occurrences.entrySet().stream()
                 .filter(entry -> entry.getValue() > 1)
                 .map(entry -> new DuplicateRecord(entry.getKey(), entry.getValue()))
                 .sorted(Comparator.comparingInt(DuplicateRecord::occurrences).reversed()
-                        .thenComparing(duplicate -> duplicate.address().city(), byName)
-                        .thenComparing(duplicate -> duplicate.address().street(), byName)
-                        .thenComparing(duplicate -> duplicate.address().house(), byName))
+                        .thenComparing(duplicate -> duplicate.address().city())
+                        .thenComparing(duplicate -> duplicate.address().street())
+                        .thenComparing(duplicate -> duplicate.address().house()))
                 .toList();
     }
 
